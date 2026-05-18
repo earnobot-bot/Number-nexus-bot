@@ -1,0 +1,31 @@
+name: Telegram Bot Runner
+
+on:
+  push:
+    branches: [ "main" ]
+  schedule:
+    # প্রতি ৫ ঘণ্টা পর পর গিটহাব নিজে থেকেই এই বটটি রি-স্টার্ট বা রান করবে (Timeout এড়ানোর জন্য)
+    - cron: '0 */5 * * *'
+  workflow_dispatch: # এই অপশনটির মাধ্যমে আপনি চাইলে ম্যানুয়ালি বোতাম টিপেও রান করতে পারবেন
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python Environment
+      uses: actions/setup-python@v5
+      with:
+        python-python: '3.11'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Telegram Bot
+      run: python main.py
+      
