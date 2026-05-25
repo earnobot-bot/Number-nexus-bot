@@ -15,7 +15,7 @@ from telegram.error import BadRequest
 # --- কনফিগারেশন ---
 BOT_TOKEN = "8863510519:AAG66NYWEDnTujN45Uuf4pAZ2Dn9hGvGF-k"
 ADMIN_ID = 6703675335
-API_KEY = "nxa_93881e9c0602de1bd857f9c6d264eb6db7f2c067"
+API_KEY = "nxa_bfa68b4cf78247617af5664f54629dba589728ad"
 BASE_URL = "http://185.190.142.81/api/v1"
 
 HEADERS = {
