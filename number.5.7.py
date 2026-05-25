@@ -16,7 +16,7 @@ from telegram.error import BadRequest
 BOT_TOKEN = "8863510519:AAG66NYWEDnTujN45Uuf4pAZ2Dn9hGvGF-k"
 ADMIN_ID = 6703675335
 API_KEY = "nxa_bfa68b4cf78247617af5664f54629dba589728ad"
-BASE_URL = "http://185.190.142.81/api/v1"
+BASE_URL = "http://63.141.255.227/api/v1/"
 
 HEADERS = {
     "Content-Type": "application/json",
