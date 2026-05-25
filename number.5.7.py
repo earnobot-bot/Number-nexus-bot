@@ -289,22 +289,27 @@ async def process_duplicate_checker(update: Update, context: ContextTypes.DEFAUL
             await asyncio.sleep(0.5)
             await status_msg.edit_text(f"⚙️ Processing data... {p}%")
             
+        # ইনপুট ফাইলটি রিড করা হচ্ছে (সব কলামসহ)
         df = pd.read_excel(input_file, header=None)
-        raw_data = df[0].dropna().astype(str).str.strip()
-        unique_series = raw_data.drop_duplicates(keep='first')
-        duplicate_series = raw_data[raw_data.duplicated(keep='first')].unique()
+        
+        # প্রথম কলামের (যা ইউজারনেম) ডুপ্লিকেট চেক করার সুবিধার্থে সব ডেটাকে স্ট্রিপ করা হচ্ছে
+        df[0] = df[0].astype(str).str.strip()
+        
+        # প্রথম কলামের বেসিসে ইউনিক রো এবং ডুপ্লিকেট রো আলাদাকরণ
+        unique_df = df.drop_duplicates(subset=[0], keep='first')
+        duplicate_df = df[df.duplicated(subset=[0], keep='first')]
         
         with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
-            pd.DataFrame(unique_series).to_excel(writer, sheet_name='Sheet1', index=False, header=False)
-            if len(duplicate_series) > 0:
-                pd.DataFrame(duplicate_series).to_excel(writer, sheet_name='Sheet2', index=False, header=False)
+            unique_df.to_excel(writer, sheet_name='Sheet1', index=False, header=False)
+            if len(duplicate_df) > 0:
+                duplicate_df.to_excel(writer, sheet_name='Sheet2', index=False, header=False)
         
         await status_msg.edit_text(f"⚙️ Processing complete! 100%")
         summary = (
             f"📊 Data Analysis Report\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
-            f"✅ Unique IDs: {len(unique_series)} \n"
-            f"🚫 Duplicate IDs: {len(duplicate_series)} \n"
+            f"✅ Unique IDs: {len(unique_df)} \n"
+            f"🚫 Duplicate IDs: {len(duplicate_df)} \n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
             f"📂 Check the attached file for details."
         )
